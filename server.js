@@ -9,7 +9,7 @@ app.get("/:id/manifest.mpd", async (req, res) => {
   const { id } = req.params;
 
   // Map your new Render route ID to the original URL
-  const sourceUrl = `http://143.44.136.67:6060/001/2/ch0000009099000000${id}/manifest.mpd?AuthInfo=DvftfiQOMAT%2Fl3VKz%2F6TxrBYt0tiYrnNALuVtfVicLxYxw0MdBePEXRMFugy%2F7SueCmaIII5rdrbbPKvAVYUlQ%3D%3D&JITPDRMType=Widevine&virtualDomain=001.live_hls.zte.com&m4s_min=1`;
+  const sourceUrl = `http://143.44.136.67:6060/001/2/ch00000090990000001093/manifest.mpd?JITPDRMType=Widevine&virtualDomain=001.live_hls.zte.com&m4s_min=1`;
 
   try {
     const response = await fetch(sourceUrl);
