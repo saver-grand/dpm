@@ -1,25 +1,14 @@
 {
-  "name": "mpd-shortlink",
+  "name": "mpd-restream",
   "version": "1.0.0",
-  "description": "Simple Express-based MPD shortlink redirect server",
+  "description": "Non-DRM MPD to MPD restream server",
   "main": "server.js",
-  "type": "module",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.19.2"
-  },
-  "engines": {
-    "node": ">=18"
-  },
-  "keywords": [
-    "mpd",
-    "redirect",
-    "shortlink",
-    "express",
-    "render"
-  ],
-  "author": "Your Name",
-  "license": "MIT"
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1",
+    "node-fetch": "^2.6.7"
+  }
 }
