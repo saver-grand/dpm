@@ -23,8 +23,8 @@ app.get("/", (req, res) => {
         <title>AuthInfo Proxy</title>
       </head>
       <body style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px;">
-        <h1>WELCOME TO</h1>
-        <p>HONOR TV</p>
+        <h1>WELCOME</h1>
+        <p>😀</p>
         <p>ENJOY YOUR LIFE</code></p>
       </body>
     </html>
