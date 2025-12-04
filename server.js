@@ -15,6 +15,22 @@ function generateAuthInfo(length = 48) {
   return encodeURIComponent(token);
 }
 
+// Home page
+app.get("/", (req, res) => {
+  res.send(`
+    <html>
+      <head>
+        <title>AuthInfo Proxy</title>
+      </head>
+      <body style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px;">
+        <h1>WELCOME TO</h1>
+        <p>HONOR TV</p>
+        <p>ENJOY YOUR LIFE</code></p>
+      </body>
+    </html>
+  `);
+});
+
 // Proxy route: /:channelId/manifest.mpd
 app.get("/:channelId/manifest.mpd", (req, res) => {
   const { channelId } = req.params;
@@ -24,11 +40,6 @@ app.get("/:channelId/manifest.mpd", (req, res) => {
 
   // Redirect client to Go-to URL
   res.redirect(goToURL);
-});
-
-// Health check
-app.get("/", (req, res) => {
-  res.send("AuthInfo Proxy is running!");
 });
 
 app.listen(PORT, () => {
