@@ -21,7 +21,7 @@ function generateUserSessionId() {
 }
 
 // Helper: Generate numeric IASHttpSessionId (12-digit)
-function generateIASHttpSessionId(length = 12) {
+function generateIASHttpSessionId(length = 26) {
   let id = "";
   for (let i = 0; i < length; i++) {
     id += Math.floor(Math.random() * 10);
