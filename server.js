@@ -5,14 +5,17 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 
-// Helper: Generate AuthInfo token (Base64-like) and URL-encode
+// Helper: Generate proper Base64 AuthInfo and URL-encode
 function generateAuthInfo(length = 48) {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-  let token = "";
+  // Generate random bytes
+  const bytes = [];
   for (let i = 0; i < length; i++) {
-    token += chars[Math.floor(Math.random() * chars.length)];
+    bytes.push(Math.floor(Math.random() * 256));
   }
-  return encodeURIComponent(token);
+  // Convert to Base64
+  const base64 = Buffer.from(bytes).toString("base64");
+  // URL-encode
+  return encodeURIComponent(base64);
 }
 
 // Helper: Generate numeric usersessionid (9-digit)
@@ -49,11 +52,11 @@ app.get("/", (req, res) => {
 app.get("/:channelId/manifest.mpd", (req, res) => {
   const { channelId } = req.params;
 
-  const authInfo = generateAuthInfo();                 // URL-encoded AuthInfo
+  const authInfo = generateAuthInfo();                 // URL-encoded Base64
   const userSessionId = generateUserSessionId();       // numeric 9-digit
   const IASHttpSessionId = generateIASHttpSessionId(); // numeric 12-digit
 
-  const goToURL = `http://143.44.136.67:6060/001/2/ch0000009099000000${channelId}/manifest.mpd?JITPDRMType=Widevine&JITPMediaType=DASH&virtualDomain=001.live_hls.zte.com&m4s_min=1&usersessionid=${userSessionId}&IASHttpSessionId=RR${IASHttpSessionId}&AuthInfo=${authInfo}`;
+  const goToURL = `http://143.44.136.67:6060/001/2/ch0000009099000000${channelId}/manifest.mpd?JITPDRMType=Widevine&JITPMediaType=DASH&virtualDomain=001.live_hls.zte.com&ztecid=ch00000090990000001093&m4s_min=1&stbMac=02:00:00:00:00:00&stbIp=192.168.1.102&stbId=02:00:00:00:00:00&TerminalFlag=1&usersessionid=${userSessionId}&IASHttpSessionId=RR${IASHttpSessionId}&AuthInfo=${authInfo}`;
 
   // Redirect client to Go-to URL
   res.redirect(goToURL);
