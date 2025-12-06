@@ -58,7 +58,7 @@ app.get("/:channelId/manifest.mpd", (req, res) => {
   const IASHttpSessionId = generateIASHttpSessionId();
   const randomIP = randomPhilippinesIP();   // ← NEW (Random PH IP)
 
-  const goToURL = `http://143.44.136.67:6060/001/2/ch0000009099000000${channelId}/manifest.mpd?JITPDRMType=Widevine&JITPMediaType=DASH&virtualDomain=001.live_hls.zte.com&ztecid=ch00000090990000001093&m4s_min=1&stbMac=02:00:00:00:00:00&stbIp=${randomIP}&stbId=02:00:00:00:00:00&TerminalFlag=1&usersessionid=${userSessionId}&IASHttpSessionId=RR${IASHttpSessionId}&AuthInfo=${authInfo}`;
+  const goToURL = `http://136.158.97.2:6610/001/2/ch0000009099000000${channelId}/manifest.mpd?JITPDRMType=Widevine&JITPMediaType=DASH&virtualDomain=001.live_hls.zte.com&ztecid=ch00000090990000001093&m4s_min=1&stbMac=02:00:00:00:00:00&stbIp=${randomIP}&stbId=02:00:00:00:00:00&TerminalFlag=1&usersessionid=${userSessionId}&IASHttpSessionId=RR${IASHttpSessionId}&AuthInfo=${authInfo}`;
 
   res.redirect(goToURL);
 });
