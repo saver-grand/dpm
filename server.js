@@ -5,30 +5,33 @@ const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 
-// Helper: Generate proper Base64 AuthInfo and URL-encode
+// Generate random PH IP (Globe/Smart range)
+function randomPhilippinesIP() {
+  const octet1 = 49;       // Fixed PH Range start
+  const octet2 = 144 + Math.floor(Math.random() * 4); // 144–147
+  const octet3 = Math.floor(Math.random() * 256);
+  const octet4 = Math.floor(Math.random() * 256);
+  return `${octet1}.${octet2}.${octet3}.${octet4}`;
+}
+
+// Generate Base64 AuthInfo (URL encoded)
 function generateAuthInfo(length = 48) {
-  // Generate random bytes
   const bytes = [];
   for (let i = 0; i < length; i++) {
     bytes.push(Math.floor(Math.random() * 256));
   }
-  // Convert to Base64
-  const base64 = Buffer.from(bytes).toString("base64");
-  // URL-encode
-  return encodeURIComponent(base64);
+  return encodeURIComponent(Buffer.from(bytes).toString("base64"));
 }
 
-// Helper: Generate numeric usersessionid (9-digit)
+// Generate numeric usersessionid
 function generateUserSessionId() {
   return Math.floor(100000000 + Math.random() * 900000000);
 }
 
-// Helper: Generate numeric IASHttpSessionId (12-digit)
+// Generate numeric IASHttpSessionId
 function generateIASHttpSessionId(length = 26) {
   let id = "";
-  for (let i = 0; i < length; i++) {
-    id += Math.floor(Math.random() * 10);
-  }
+  for (let i = 0; i < length; i++) id += Math.floor(Math.random() * 10);
   return id;
 }
 
@@ -36,10 +39,8 @@ function generateIASHttpSessionId(length = 26) {
 app.get("/", (req, res) => {
   res.send(`
     <html>
-      <head>
-        <title>AuthInfo Proxy</title>
-      </head>
-      <body style="font-family: Arial, sans-serif; text-align: center; margin-top: 50px;">
+      <head><title>AuthInfo Proxy</title></head>
+      <body style="font-family: Arial; text-align:center; margin-top:50px;">
         <h1>WELCOME</h1>
         <p>😀</p>
         <p>ENJOY YOUR LIFE</p>
@@ -48,17 +49,17 @@ app.get("/", (req, res) => {
   `);
 });
 
-// Proxy route: /:channelId/manifest.mpd
+// Proxy route
 app.get("/:channelId/manifest.mpd", (req, res) => {
   const { channelId } = req.params;
 
-  const authInfo = generateAuthInfo();                 // URL-encoded Base64
-  const userSessionId = generateUserSessionId();       // numeric 9-digit
-  const IASHttpSessionId = generateIASHttpSessionId(); // numeric 12-digit
+  const authInfo = generateAuthInfo();
+  const userSessionId = generateUserSessionId();
+  const IASHttpSessionId = generateIASHttpSessionId();
+  const randomIP = randomPhilippinesIP();   // ← NEW (Random PH IP)
 
-  const goToURL = `http://143.44.136.67:6060/001/2/ch0000009099000000${channelId}/manifest.mpd?JITPDRMType=Widevine&JITPMediaType=DASH&virtualDomain=001.live_hls.zte.com&ztecid=ch00000090990000001093&m4s_min=1&stbMac=02:00:00:00:00:00&stbIp=192.168.1.102&stbId=02:00:00:00:00:00&TerminalFlag=1&usersessionid=${userSessionId}&IASHttpSessionId=RR${IASHttpSessionId}&AuthInfo=${authInfo}`;
+  const goToURL = `http://143.44.136.67:6060/001/2/ch0000009099000000${channelId}/manifest.mpd?JITPDRMType=Widevine&JITPMediaType=DASH&virtualDomain=001.live_hls.zte.com&ztecid=ch00000090990000001093&m4s_min=1&stbMac=02:00:00:00:00:00&stbIp=${randomIP}&stbId=02:00:00:00:00:00&TerminalFlag=1&usersessionid=${userSessionId}&IASHttpSessionId=RR${IASHttpSessionId}&AuthInfo=${authInfo}`;
 
-  // Redirect client to Go-to URL
   res.redirect(goToURL);
 });
 
